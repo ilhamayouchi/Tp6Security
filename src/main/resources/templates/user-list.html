@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des utilisateurs</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f6f8; }
+        .card { max-width: 700px; margin: auto; background: #fff; padding: 24px;
+            border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #4f46e5; color: #fff; }
+        .actions { white-space: nowrap; }
+        .actions form { display: inline; }
+        a.btn, button.btn { display: inline-block; padding: 6px 12px; color: #fff;
+            border: none; border-radius: 6px; text-decoration: none;
+            font-size: .9rem; cursor: pointer; background: #4f46e5; }
+        .btn-edit { background: #f59e0b; }
+        .btn-delete { background: #dc2626; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Utilisateurs</h1>
+    <a class="btn" th:href="@{/adduser}">Ajouter un utilisateur</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${users}">
+            <td th:text="${u.name}"></td>
+            <td th:text="${u.email}"></td>
+            <td class="actions">
+                <a class="btn btn-edit" th:href="@{/edituser/{id}(id=${u.id})}">Modifier</a>
+                <form th:action="@{/deleteuser/{id}(id=${u.id})}" method="post"
+                      onsubmit="return confirm('Supprimer cet utilisateur ?');">
+                    <button type="submit" class="btn btn-delete">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(users)}">
+            <td colspan="3">Aucun utilisateur pour le moment.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
